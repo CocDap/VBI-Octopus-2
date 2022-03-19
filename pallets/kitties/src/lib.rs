@@ -2,6 +2,13 @@
 
 pub use pallet::*;
 
+
+#[cfg(test)]
+mod mock;
+
+#[cfg(test)]
+mod tests;
+
 #[frame_support::pallet]
 pub mod pallet {
 	use frame_support::pallet_prelude::*;
@@ -13,6 +20,7 @@ pub mod pallet {
 	};
 	use sp_io::hashing::blake2_128;
 	use scale_info::TypeInfo;
+	use sp_std::vec::Vec;
 
 	#[cfg(feature = "std")]
 	use frame_support::serde::{Deserialize, Serialize};
@@ -22,7 +30,7 @@ pub mod pallet {
 		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
 
 	// Struct for holding Kitty information.
-	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo, MaxEncodedLen)]
+	#[derive(Clone, Encode, Decode, PartialEq, TypeInfo, MaxEncodedLen)]
 	#[scale_info(skip_type_params(T))]
 	#[codec(mel_bound())]
 	pub struct Kitty<T: Config> {
@@ -32,6 +40,18 @@ pub mod pallet {
 		pub owner: <T as frame_system::Config>::AccountId,
 	}
 
+	impl<T:Config> sp_std::fmt::Display for Kitty<T> {
+		fn fmt(&self, f: &mut sp_std::fmt::Formatter<'_>) -> sp_std::fmt::Result {
+			write!(f, "(dna:{:?}, price:{:?},gender:{:?}, owner:{:?})", self.dna, self.price, self.gender, self.owner)
+		}
+	}
+
+	//Struct metadata
+	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo)]
+	pub struct Metadata{
+		name: Vec<u8>,
+		age: u8,
+	}
 	// Enum declaration for Gender.
 	#[derive(Clone, Encode, Decode, PartialEq, RuntimeDebug, TypeInfo, MaxEncodedLen)]
 	#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
@@ -137,7 +157,7 @@ pub mod pallet {
 			//let ex1 = Self::kitty_cnt();
 
 			let kitty_id = Self::mint(&sender, None, None)?;
-
+			log::info!("owner creating kitty:{:?}", sender);
 			// Logging to the console
 			log::info!("A kitty is born with ID: {:?}.", kitty_id);
 			// Deposit our "Created" event.
@@ -312,6 +332,14 @@ pub mod pallet {
 				owner: owner.clone(),
 			};
 
+			let metadata = Metadata{
+				name: b"Dungho".to_vec(),
+				age: 24u8,
+			};
+
+			log::info!("{:?}", metadata);
+
+			log::info!("kitty:{}", kitty);
 			let kitty_id = T::Hashing::hash_of(&kitty);
 
 			// Performs this operation first as it may fail

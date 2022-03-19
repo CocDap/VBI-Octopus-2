@@ -275,6 +275,7 @@ impl pallet_sudo::Config for Runtime {
 /// Configure the pallet-template in pallets/template.
 impl pallet_template::Config for Runtime {
 	type Event = Event;
+	type WeightInfo = pallet_template::weights::SubstrateWeightInfo<Runtime>;
 }
 impl pallet_tightly_coupling::Config for Runtime {
 	type Event = Event;
