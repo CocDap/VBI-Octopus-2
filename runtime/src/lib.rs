@@ -298,6 +298,7 @@ impl pallet_kitties::Config for Runtime {
 	type MaxKittyOwned = MaxKittyOwned;
 	type Currency = Balances;
 	type KittyRandomness = RandomnessCollectiveFlip;
+	type Time = Timestamp;
 
 }
 
