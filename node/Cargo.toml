@@ -39,6 +39,8 @@ sp-timestamp = { version = "4.0.0-dev", git = "https://github.com/paritytech/sub
 
 # These dependencies are used for the node template's RPCs
 jsonrpc-core = "18.0.0"
+jsonrpc-derive ="18.0.0"
+jsonrpc-core-client = "18.0.0"
 sc-rpc = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.17" }
 sp-api = { version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.17" }
 sc-rpc-api = { version = "0.10.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.17" }
@@ -54,6 +56,9 @@ frame-benchmarking-cli = { version = "4.0.0-dev", git = "https://github.com/pari
 
 # Local Dependencies
 node-template-runtime = { version = "4.0.0-dev", path = "../runtime" }
+pallet-template-rpc = { version = "4.0.0-dev", path = "../pallets/template/rpc" }
+pallet-template-rpc-runtime-api = { version = "4.0.0-dev", path = "../pallets/template/rpc/runtime-api" }
+
 
 [build-dependencies]
 substrate-build-script-utils = { version = "3.0.0", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.17" }

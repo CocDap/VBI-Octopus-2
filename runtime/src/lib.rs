@@ -436,6 +436,12 @@ impl_runtime_apis! {
 		}
 	}
 
+	impl pallet_template_rpc_runtime_api::SumStorageApi<Block> for Runtime {
+		fn get_sum() -> u32 {
+			TemplateModule::sum_storage()
+		}
+	}
+
 	impl sp_session::SessionKeys<Block> for Runtime {
 		fn generate_session_keys(seed: Option<Vec<u8>>) -> Vec<u8> {
 			opaque::SessionKeys::generate(seed)
