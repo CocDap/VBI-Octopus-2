@@ -276,6 +276,7 @@ impl pallet_sudo::Config for Runtime {
 impl pallet_template::Config for Runtime {
 	type Event = Event;
 	type WeightInfo = pallet_template::weights::SubstrateWeightInfo<Runtime>;
+	type Currency = Balances;
 }
 impl pallet_tightly_coupling::Config for Runtime {
 	type Event = Event;
@@ -436,12 +437,16 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl pallet_template_rpc_runtime_api::SumStorageApi<Block> for Runtime {
+	impl pallet_template_rpc_runtime_api::SumStorageApi<Block, Balance> for Runtime {
 		fn get_sum() -> u32 {
 			TemplateModule::sum_storage()
 		}
 		fn get_store() -> pallet_template::Store{
 			TemplateModule::get_store()
+		}
+
+		fn get_student() -> pallet_template::Student<Balance> {
+			TemplateModule::get_student()
 		}
 	}
 

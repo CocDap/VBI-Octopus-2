@@ -19,12 +19,51 @@ use frame_support::pallet_prelude::*;
 use frame_system::pallet_prelude::*;
 use sp_runtime::traits::Saturating;
 use weights::WeightInfo;
+use frame_support::traits::Currency;
+
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Encode, Decode, PartialEq, TypeInfo)]
 #[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
 pub struct Store {
 	pub value: u64
 }
+
+#[derive(Clone, Encode, Decode, PartialEq, TypeInfo)]
+#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "std", serde(bound(serialize = "Balance: std::fmt::Display")))]
+#[cfg_attr(feature = "std", serde(bound(deserialize = "Balance: std::str::FromStr")))]
+pub struct Student<Balance> {
+	#[cfg_attr(feature = "std", serde(with = "serde_balance"))]
+	amount: Balance,
+
+	age: u64,
+}
+
+#[cfg(feature = "std")]
+mod serde_balance {
+	use serde::{Deserialize, Deserializer, Serializer};
+
+	pub fn serialize<S: Serializer, T: std::fmt::Display>(
+		t: &T,
+		serializer: S,
+	) -> Result<S::Ok, S::Error> {
+		serializer.serialize_str(&t.to_string())
+	}
+
+	pub fn deserialize<'de, D: Deserializer<'de>, T: std::str::FromStr>(
+		deserializer: D,
+	) -> Result<T, D::Error> {
+		let s = String::deserialize(deserializer)?;
+		s.parse::<T>().map_err(|_| serde::de::Error::custom("Parse from string failed"))
+	}
+}
+
+
+type BalanceOf<T> =
+<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+
 #[frame_support::pallet]
 pub mod pallet {
 
@@ -36,6 +75,7 @@ pub mod pallet {
 		type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
 		
 		type WeightInfo : WeightInfo;
+		type Currency : Currency<Self::AccountId>;
 	}
 
 	#[pallet::pallet]
@@ -168,6 +208,13 @@ impl<T: Config> Pallet<T>{
 
 		let store = Store { value : 10u64};
 		store
+	}
+
+
+	pub fn get_student() -> Student<BalanceOf<T>>{
+		let amount: BalanceOf<T> = 10u32.into(); 
+		let student = Student{ amount: amount, age: 18u64};
+		student
 	}
 }
 

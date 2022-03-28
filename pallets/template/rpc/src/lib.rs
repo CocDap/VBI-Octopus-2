@@ -31,12 +31,15 @@ use sp_runtime::{
 use std::sync::Arc;
 use pallet_template_rpc_runtime_api::SumStorageApi as SumStorageRuntimeApi;
 use pallet_template::Store;
+use pallet_template::Student;
 #[rpc]
-pub trait SumStorageApi<BlockHash> {
+pub trait SumStorageApi<BlockHash, Balance>  where Balance: codec::Codec + std::fmt::Display +std::str::FromStr {
 	#[rpc(name = "sumStorage_get")]
     fn get_sum(&self, at: Option<BlockHash>) -> Result<u32>;
 	#[rpc(name ="template_getStore")]
 	fn get_store(&self, at: Option<BlockHash>) -> Result<Store>;
+	#[rpc(name ="template_getStudent")]
+	fn get_student(&self, at: Option<BlockHash>) -> Result<Student<Balance>>;
 
 
 }
@@ -71,12 +74,14 @@ impl From<Error> for i64 {
 	}
 }
 
-impl<C, Block> SumStorageApi<<Block as BlockT>::Hash>
+impl<C, Block, Balance> SumStorageApi<<Block as BlockT>::Hash, Balance>
 	for SumStorage<C, Block>
 where
 	Block: BlockT,
 	C: 'static + ProvideRuntimeApi<Block> + HeaderBackend<Block>,
-	C::Api: SumStorageRuntimeApi<Block>,
+	C::Api: SumStorageRuntimeApi<Block, Balance>,
+	Balance : codec::Codec + std::fmt::Display +std::str::FromStr,
+	pallet_template::Student<Balance> : sp_api::Decode,
 {
 	fn get_sum(
 		&self,
@@ -103,6 +108,21 @@ where
 			self.client.info().best_hash));
         
         let result_api = api.get_store(&at);
+
+		result_api.map_err(|e| RpcError {
+			code: ErrorCode::ServerError(Error::RuntimeError.into()),
+			message: "Unable to query dispatch info.".into(),
+			data: Some(e.to_string().into()),
+		})
+	}
+
+	fn get_student(&self, at: Option<<Block as BlockT>::Hash>) -> Result<Student<Balance>> {
+		let api = self.client.runtime_api();
+		let at = BlockId::hash(at.unwrap_or_else(||
+			// If the block hash is not supplied assume the best block.
+			self.client.info().best_hash));
+        
+        let result_api = api.get_student(&at);
 
 		result_api.map_err(|e| RpcError {
 			code: ErrorCode::ServerError(Error::RuntimeError.into()),
