@@ -440,6 +440,9 @@ impl_runtime_apis! {
 		fn get_sum() -> u32 {
 			TemplateModule::sum_storage()
 		}
+		fn get_store() -> pallet_template::Store{
+			TemplateModule::get_store()
+		}
 	}
 
 	impl sp_session::SessionKeys<Block> for Runtime {

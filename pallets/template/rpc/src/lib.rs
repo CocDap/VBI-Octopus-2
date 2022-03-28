@@ -29,13 +29,14 @@ use sp_runtime::{
 	traits::{Block as BlockT, MaybeDisplay},
 };
 use std::sync::Arc;
-
 use pallet_template_rpc_runtime_api::SumStorageApi as SumStorageRuntimeApi;
-
+use pallet_template::Store;
 #[rpc]
 pub trait SumStorageApi<BlockHash> {
 	#[rpc(name = "sumStorage_get")]
     fn get_sum(&self, at: Option<BlockHash>) -> Result<u32>;
+	#[rpc(name ="template_getStore")]
+	fn get_store(&self, at: Option<BlockHash>) -> Result<Store>;
 
 
 }
@@ -87,6 +88,21 @@ where
 			self.client.info().best_hash));
         
         let result_api = api.get_sum(&at);
+
+		result_api.map_err(|e| RpcError {
+			code: ErrorCode::ServerError(Error::RuntimeError.into()),
+			message: "Unable to query dispatch info.".into(),
+			data: Some(e.to_string().into()),
+		})
+	}
+
+	fn get_store(&self, at: Option<<Block as BlockT>::Hash>) -> Result<Store> {
+		let api = self.client.runtime_api();
+		let at = BlockId::hash(at.unwrap_or_else(||
+			// If the block hash is not supplied assume the best block.
+			self.client.info().best_hash));
+        
+        let result_api = api.get_store(&at);
 
 		result_api.map_err(|e| RpcError {
 			code: ErrorCode::ServerError(Error::RuntimeError.into()),

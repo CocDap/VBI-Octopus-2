@@ -20,6 +20,11 @@ use frame_system::pallet_prelude::*;
 use sp_runtime::traits::Saturating;
 use weights::WeightInfo;
 
+#[derive(Clone, Encode, Decode, PartialEq, TypeInfo)]
+#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
+pub struct Store {
+	pub value: u64
+}
 #[frame_support::pallet]
 pub mod pallet {
 
@@ -157,6 +162,12 @@ impl<T: Config> Pallet<T>{
 
 	pub fn sum_storage() -> u32{
 		Something::<T>::get().unwrap() + Something2::<T>::get().unwrap()
+	}
+
+	pub fn get_store() -> Store{
+
+		let store = Store { value : 10u64};
+		store
 	}
 }
 
