@@ -377,6 +377,7 @@ impl_runtime_apis! {
 
 		fn execute_block(block: Block) {
 			Executive::execute_block(block);
+
 		}
 
 		fn initialize_block(header: &<Block as BlockT>::Header) {
@@ -437,7 +438,7 @@ impl_runtime_apis! {
 		}
 	}
 
-	impl pallet_template_rpc_runtime_api::SumStorageApi<Block, Balance> for Runtime {
+	impl pallet_template_rpc_runtime_api::SumStorageApi<Block, Balance, AccountId> for Runtime {
 		fn get_sum() -> u32 {
 			TemplateModule::sum_storage()
 		}
@@ -447,6 +448,10 @@ impl_runtime_apis! {
 
 		fn get_student() -> pallet_template::Student<Balance> {
 			TemplateModule::get_student()
+		}
+
+		fn get_student_account() -> pallet_template::StudentAccount<AccountId> {
+			TemplateModule::get_student_account()
 		}
 	}
 

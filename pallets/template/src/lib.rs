@@ -20,6 +20,7 @@ use frame_system::pallet_prelude::*;
 use sp_runtime::traits::Saturating;
 use weights::WeightInfo;
 use frame_support::traits::Currency;
+use sp_io::hashing::blake2_256;
 
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
@@ -39,6 +40,12 @@ pub struct Student<Balance> {
 	amount: Balance,
 
 	age: u64,
+}
+
+#[derive(Clone, Encode, Decode, PartialEq, TypeInfo)]
+#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
+pub struct StudentAccount<Account> {
+	account: Account,
 }
 
 #[cfg(feature = "std")]
@@ -215,6 +222,15 @@ impl<T: Config> Pallet<T>{
 		let amount: BalanceOf<T> = 10u32.into(); 
 		let student = Student{ amount: amount, age: 18u64};
 		student
+	}
+
+	pub fn get_student_account()-> StudentAccount<T::AccountId> {
+		let entropy = ("dung", 1u32, 1u32).using_encoded(blake2_256);
+		let account = T::AccountId::decode(&mut &entropy[..]).unwrap();
+		let student_account = StudentAccount::<T::AccountId>{
+			account: account
+		};
+		student_account
 	}
 }
 
