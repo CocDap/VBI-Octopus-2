@@ -5,19 +5,16 @@ use pallet_template::Student;
 use pallet_template::StudentAccount;
 use codec::Codec;
 sp_api::decl_runtime_apis! {
-	pub trait SumStorageApi<Balance, Account> 
-	where Balance:Codec, 
-	Student<Balance>: sp_api::Decode,
-	StudentAccount<Account>: sp_api::Decode,
+	pub trait SumStorageApi<Balance, Account>
+	where Student<Balance, Account> : sp_api::Decode,
+
 
 	{
         fn get_sum() -> u32;
 
 		fn get_store() -> Store;
 
-		fn get_student() -> Student<Balance>;
-
-		fn get_student_account() -> StudentAccount<Account>;
+		fn get_student() -> Student<Balance, Account>;
 
 
 	}

@@ -4014,6 +4014,7 @@ dependencies = [
  "sp-core",
  "sp-rpc",
  "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]

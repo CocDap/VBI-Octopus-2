@@ -445,13 +445,8 @@ impl_runtime_apis! {
 		fn get_store() -> pallet_template::Store{
 			TemplateModule::get_store()
 		}
-
-		fn get_student() -> pallet_template::Student<Balance> {
+		fn get_student() -> pallet_template::Student<Balance, AccountId> {
 			TemplateModule::get_student()
-		}
-
-		fn get_student_account() -> pallet_template::StudentAccount<AccountId> {
-			TemplateModule::get_student_account()
 		}
 	}
 

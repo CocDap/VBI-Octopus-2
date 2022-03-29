@@ -32,13 +32,13 @@ pub struct Store {
 }
 
 #[derive(Clone, Encode, Decode, PartialEq, TypeInfo)]
-#[cfg_attr(feature = "std", derive(serde::Serialize, serde::Deserialize))]
-#[cfg_attr(feature = "std", serde(bound(serialize = "Balance: std::fmt::Display")))]
-#[cfg_attr(feature = "std", serde(bound(deserialize = "Balance: std::str::FromStr")))]
-pub struct Student<Balance> {
+#[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
+#[cfg_attr(feature = "std", serde(bound(serialize = "Account: Serialize ,Balance: std::fmt::Display")))]
+#[cfg_attr(feature = "std", serde(bound(deserialize = "Account: Deserialize<'de>, Balance: std::str::FromStr")))]
+pub struct Student<Balance, Account> {
 	#[cfg_attr(feature = "std", serde(with = "serde_balance"))]
 	amount: Balance,
-
+	account : Account,
 	age: u64,
 }
 
@@ -47,6 +47,7 @@ pub struct Student<Balance> {
 pub struct StudentAccount<Account> {
 	account: Account,
 }
+
 
 #[cfg(feature = "std")]
 mod serde_balance {
@@ -218,9 +219,13 @@ impl<T: Config> Pallet<T>{
 	}
 
 
-	pub fn get_student() -> Student<BalanceOf<T>>{
+	pub fn get_student() -> Student<BalanceOf<T>, T::AccountId>{
 		let amount: BalanceOf<T> = 10u32.into(); 
-		let student = Student{ amount: amount, age: 18u64};
+
+		let entropy = ("dung", 1u32, 1u32).using_encoded(blake2_256);
+		let account = T::AccountId::decode(&mut &entropy[..]).unwrap();
+
+		let student = Student{ amount: amount,account:account, age: 18u64};
 		student
 	}
 
