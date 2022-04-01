@@ -1,0 +1,10 @@
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "method":"author_insertKey",
+    "params": [
+        "aura",
+        "choice post region neutral movie ranch apology abuse sweet comfort taxi sure", 
+       "0x8e122f2afc57fae170be5027563b332273e62d50b3f9daee19ebeeb7be43b97b"
+    ]
+}

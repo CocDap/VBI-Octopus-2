@@ -1,0 +1,10 @@
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "method":"author_insertKey",
+    "params": [
+        "aura",
+        "slice cabin sign note stone elbow tip myth ethics walnut solar width",
+        "0x7248900331fe3d1dc7a5c503e870bd7a5f17b3df73bbdca440c419761a99330c"
+    ]
+}

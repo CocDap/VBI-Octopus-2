@@ -1,0 +1,10 @@
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "method":"author_insertKey",
+    "params": [
+        "gran",
+        "slice cabin sign note stone elbow tip myth ethics walnut solar width",
+        "0x67a92511dad839bd065a0183ce447273c72cc267aca1f15291d9fc02ab1a2ae1"
+    ]
+}

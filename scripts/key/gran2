@@ -1,0 +1,10 @@
+{
+    "jsonrpc":"2.0",
+    "id":1,
+    "method":"author_insertKey",
+    "params": [
+        "gran",
+        "choice post region neutral movie ranch apology abuse sweet comfort taxi sure",
+	    "0xe9c46eb1281c9d2ed5cc0c02c9a89c8d727c386143aef5bad44fb67118ac1710"
+    ]
+}
