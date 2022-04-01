@@ -211,16 +211,16 @@ pub fn kitty_testnet_config() -> Result<ChainSpec, String> {
         (
 			//root
             hex!["16c1e8c292b0ca968ee84d3f33de819dd3d1466ee4a5a025c4c714582e29fa26"].into(),
-			10_000_000
+			100_000_000_000_000_000
 		),
 		(
-            hex!["18c31f136bd4e7d942de1a291cf11bab8a9d93fc38036a7951b49c2017166c39"].into(),
-			10_000_000
+            hex!["7248900331fe3d1dc7a5c503e870bd7a5f17b3df73bbdca440c419761a99330c"].into(),
+			100_000_000_000_000_000
 		),
 
         (
-            hex!["ee83256d5fd8a4fc41b418d2ae84be2448a7458ce4ad8e88a545e47715a9e000"].into(),
-			10_000_000
+            hex!["8e122f2afc57fae170be5027563b332273e62d50b3f9daee19ebeeb7be43b97b"].into(),
+			100_000_000_000_000_000
 		),
 
         
