@@ -1,0 +1,7 @@
+{ "jsonrpc":"2.0", 
+"id":1, 
+"method":"author_insertKey", 
+"params": 
+[ "aura",
+ "clerk mean sand apple shoulder river vessel pact husband rug shine boat", 
+ "0x6a9fa29ed992f7cfc9235832bbcf511be3a76a7458a213427076d79b6447500a" ] }

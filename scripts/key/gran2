@@ -1,0 +1,7 @@
+{ "jsonrpc":"2.0", 
+"id":1, 
+"method":"author_insertKey", 
+"params": 
+[ "gran",
+ "evil tragic prize hotel vintage case barrel tooth today demise oyster couch", 
+ "0xd7c155ea7b64467e95275397a2cfba83a96e60c5c75f6640c50864f32d858d18" ] }
